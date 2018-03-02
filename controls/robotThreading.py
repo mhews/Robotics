@@ -13,6 +13,9 @@ class Controller:
         self.botEye = self.canvas.create_rectangle(0, 720, 1040, 1500, fill='black')
         self.topEye = self.canvas.create_rectangle(0, -800, 1040, 0, fill='black')
         self.canvas.bind("<Button-1>", self.clickHandle)
+        body = tk.Label(self.win, text = "BODY")
+        body.place (x = 5, y = 10)
+        body.pack()
         self.canvas.pack()
 
     def eyeMove(self):
@@ -55,7 +58,9 @@ class Controller:
 
 
     def createCommand(self, part):
-        c = tk.Frame(self.win, width = 50, height = 300)
+        print(part)
+        if (part != 5):
+            c = tk.Frame(self.win, width = 50, height = 300)
         if (part == 0):
             lbl = tk.Label(c, text = "BODY")
             lbl.grid(column = 1, row = 0)
@@ -67,7 +72,6 @@ class Controller:
             middle.pack()
             right = tk.Radiobutton (c, text = "RIGHT", variable = pos, value = 2)
             right.pack()
-            c.place(x = len(self.commandList)*100 + 80, y = 0)
             self.commandList.append({'body':{'pos':pos}})
 
         if (part == 1):
@@ -87,9 +91,65 @@ class Controller:
             fast = tk.Radiobutton (c, text = "FAST", variable = speed, value = 1)
             fast.pack()
 
-            c.place(x = len(self.commandList)*100 + 80, y = 0)
             self.commandList.append({'wheels':{'direction':direction, 'speed':speed}})
+
+        if (part == 2):
+            lbl = tk.Label(c, text = "TURN")
+            lbl.grid(column = 1, row = 0)
+            lbl.pack()
+
+            direction = tk.IntVar()
+            right = tk.Radiobutton (c, text = "RIGHT", variable = direction, value = 0)
+            right.pack()
+            left = tk.Radiobutton (c, text = "LEFT", variable = direction, value = 1)
+            left.pack()
+
+            speed = tk.IntVar()
+            slow = tk.Radiobutton(c, text = 'SLOW', variable = speed, value = 0)
+            slow.pack()
+            fast = tk.Radiobutton (c, text = "FAST", variable = speed, value = 1)
+            fast.pack()
+
+            print(c.winfo_children())
+
+            self.commandList.append({'turn':{'direction':direction, 'speed':speed}})
+        if (part == 3):
+            lbl = tk.Label(c, text = "HEAD NOD")
+            lbl.grid(column = 1, row = 0)
+            lbl.pack()
+
+            pos = tk.IntVar()
+            up = tk.Radiobutton (c, text = "UP", variable = pos, value = 0)
+            up.pack()
+            middle = tk.Radiobutton (c, text = "MIDDLE", variable = pos, value = 1)
+            middle.pack()
+            down = tk.Radiobutton (c, text = "DOWN", variable = pos, value = 2)
+            down.pack()
+            self.commandList.append({'Head Nod':{'pos':pos}})
+
+        if (part == 4):
+            lbl = tk.Label(c, text = "Head Turn")
+            lbl.grid(column = 1, row = 0)
+            lbl.pack()
+            pos = tk.IntVar()
+
+            left = tk.Radiobutton (c, text = "LEFT", variable = pos, value = 0)
+            left.pack()
+            middle = tk.Radiobutton (c, text = "MIDDLE", variable = pos, value = 1)
+            middle.pack()
+            right = tk.Radiobutton (c, text = "RIGHT", variable = pos, value = 2)
+            right.pack()
+            self.commandList.append({'Head Turn':{'pos':pos}})
+
+        if (part == 5):
+            self.commandList.pop()
+            frame = self.win.winfo_children()[len(self.win.winfo_children())-1]
+            frame.destroy()
+            return(0)
+
+        c.place(x = len(self.commandList)*100, y = 0)
         self.test()
+
     def test(self):
         for key in self.commandList:
             for k, v in key.items():
