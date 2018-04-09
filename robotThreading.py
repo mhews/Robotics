@@ -115,6 +115,7 @@ class Controllers:
         self.commandList.append({'body':{'pos':pos}})
         
     def wheelClick(self, event):
+##        self.newWheelClick()
         c = tk.Frame(self.canvas, bd = 2, relief = tk.RIDGE)
         lbl = tk.Label(c, text = "WHEELS")
         lbl.grid(column = 1, row = 0)
@@ -138,6 +139,7 @@ class Controllers:
 
         c.place(x = (fmod(len(self.commandList),7) + 1)*100, y = floor(len(self.commandList)/7) * 210, width = 95, height = 200)
         self.commandList.append({'wheels':{'direction':direction, 'speed':speed, 'time':time}})
+    
         
 
     def turnClick(self, event):
@@ -302,9 +304,10 @@ class Controllers:
         else:
             x.setTarget(3,5000)
         sleep(.5)
+        
     def receive(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        commands = {'hello':'hey friend', 'bye':'peace', 'weather':'look outside', 'name':'none ya business', 'cats':'fuck the griz'}
+        commands = {'hello':'hey there friend', 'bye':'peace', 'weather':'look outside', 'name':'none ya business', 'cats':'fuck the griz'}
         try:
             self.sock.connect(('10.200.5.97', 8080))
 ##            print(self.s.recv(1024))
@@ -318,6 +321,14 @@ class Controllers:
                   print(input)
                   if input == 'start':
                       self.newTest()
+                  elif input == 'forward':
+                      x.setTarget(1,7500)
+                      sleep(2)
+                      x.setTarget(1,6000)
+                  elif input == 'backward':
+                      x.setTarget(1,4500)
+                      sleep(2)
+                      x.setTarget(1,6000)
                   elif commands.get(input) != None:
                       response = commands.get(input)
                       print('hi')
